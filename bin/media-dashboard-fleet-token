@@ -1,0 +1,43 @@
+#!/usr/bin/env python3
+"""Print this host's federation token, creating one on first use.
+
+Run this on a host you want another dashboard to watch, then paste the answer
+into that dashboard's Fleet tab. The token grants exactly one thing: reading
+this host's status export. It cannot spool a job, read the credentials page or
+open a terminal.
+
+    media-dashboard-fleet-token            # print (create if absent)
+    media-dashboard-fleet-token --rotate   # replace it; existing peers break
+"""
+
+import os
+import sys
+
+sys.path.insert(0, "/usr/local/lib/mdash")
+import mdash_fleet as fleet                            # noqa: E402
+
+
+def main():
+    if os.geteuid() != 0:
+        print("run as root - the token file is mode 600", file=sys.stderr)
+        return 1
+    if "--rotate" in sys.argv:
+        try:
+            os.remove(fleet.TOKEN_FILE)
+            print("# previous token discarded - every dashboard federating this "
+                  "host needs the new one", file=sys.stderr)
+        except OSError:
+            pass
+    tok = fleet.local_token(create=True)
+    if not tok:
+        print("could not create a token", file=sys.stderr)
+        return 1
+    if not os.path.exists(fleet.EXPORT_FILE):
+        print("# note: no export written yet - run media-dashboard.py once, or "
+              "wait for the timer", file=sys.stderr)
+    print(tok)
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

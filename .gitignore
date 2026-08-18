@@ -1,0 +1,19 @@
+# Nothing generated or host-specific belongs in here. The repo is code only:
+# accounts, tokens and detected facts live under /etc and /var on a host.
+__pycache__/
+*.pyc
+*.tmp
+*.bak
+*.bak-*
+*.tar.gz
+
+# Belt and braces - none of these are ever written into the tree, but a stray
+# copy while debugging should not become a commit.
+auth.json
+peers.json
+fleet-token
+cf-token
+site.json
+*credentials*
+.jellyfin-key
+.influx-token
