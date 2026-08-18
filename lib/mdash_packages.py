@@ -226,7 +226,9 @@ white-space:pre-wrap;word-break:break-word;max-height:40vh;overflow:auto}
 @media (max-width:620px){.pkmod{padding:0;align-items:flex-end}
 .pkmod .b{border-radius:16px 16px 0 0;border-width:1px 0 0;max-height:92vh;
 padding:18px 16px calc(18px + env(safe-area-inset-bottom))}
-.pk table td.hidesm{display:none}}
+/* th too, or the header keeps four cells while the rows have three and every
+   column below shifts one to the left. */
+.pk table td.hidesm,.pk table th.hidesm{display:none}}
 </style>
 <div class="pk">
   <div class="row">

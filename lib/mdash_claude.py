@@ -900,7 +900,14 @@ def stop_run(user, jid, sid=None):
 
 # ----------------------------------------------------------------------- page
 CSS = """
-.cld{display:grid;grid-template-columns:330px 1fr;gap:14px;align-items:start}
+/* minmax(0,...), not a bare 1fr. 1fr means minmax(auto,1fr), and that auto
+   floor is the track's min-content width - one long .tool line (which is
+   white-space:nowrap) drags the chat column past the viewport and scrolls the
+   whole page sideways on desktop. min-width:0 stops the same one level down.
+   Matches .mid / .fm / .tp elsewhere in the dashboard. */
+.cld{display:grid;grid-template-columns:330px minmax(0,1fr);gap:14px;align-items:start}
+.cld>*{min-width:0}
+#stream,#composer,#prompt{min-width:0;max-width:100%}
 @media(max-width:980px){.cld{grid-template-columns:1fr}}
 .cld .side{display:flex;flex-direction:column;gap:8px;max-height:78vh;overflow:auto}
 /* #hdr is a sibling of .cld, not a child - scoping this to `.cld .hdr` meant

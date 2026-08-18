@@ -1853,7 +1853,7 @@ padding:18px 16px calc(18px + env(safe-area-inset-bottom))}
 .tools input{min-width:0;flex-basis:100%}
 .tools select{flex:1}
 .grid{grid-template-columns:1fr}
-.flds{grid-template-columns:1fr 1fr}
+.flds{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
 }
 @media (pointer:coarse){
 .tabs button{min-height:40px}

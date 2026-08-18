@@ -1266,7 +1266,20 @@ padding:18px;max-width:560px;width:100%;box-shadow:var(--shadow)}
 .us-box h3{margin:0 0 10px;font-size:16px}
 .us-plan{font-size:13px;margin:0 0 12px;padding-left:18px}
 .us-plan li{margin:3px 0}
-@media (max-width:640px){.us-grid th,.us-grid td{padding:7px 8px}}
+@media (max-width:760px){
+/* A user x service matrix has no meaningful card form - one row per user with a
+   line per service would be enormous - so this one legitimately stays a
+   horizontal scroller. Pin the name column so you can still tell which row you
+   are reading once the service columns scroll out of view. */
+.us-grid th,.us-grid td{padding:7px 8px}
+.us-grid table{min-width:max-content}
+.us-grid th:first-child,.us-grid td:first-child{position:sticky;left:0;z-index:1;
+background:var(--card)}
+.us-grid th:first-child{background:color-mix(in srgb,var(--card) 60%,var(--bg));z-index:2}
+/* the pinned cell needs its own edge, the collapsed border scrolls away */
+.us-grid th:first-child::after,.us-grid td:first-child::after{content:"";
+position:absolute;top:0;right:0;bottom:0;width:1px;background:var(--line)}
+}
 """
 
 PAGE = """<!doctype html><meta charset="utf-8"><title>User sync</title>

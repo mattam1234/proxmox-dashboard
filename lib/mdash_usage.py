@@ -537,7 +537,15 @@ CSS = """
   border-radius:6px;z-index:50;max-width:280px;font-variant-numeric:tabular-nums}
 .note{font-size:12px;color:var(--muted);margin-top:14px;line-height:1.6}
 .empty{color:var(--muted);font-size:13px;padding:26px 0;text-align:center}
-@media(max-width:760px){.hero .fig{font-size:40px}}
+@media(max-width:760px){.hero .fig{font-size:40px}
+/* Seven columns will not fit a phone, so table.resp (shared core) stacks each
+   session into a card; these re-align the figures, which .utab right-aligns for
+   the desktop table but which read better beside their label when stacked. */
+.utab.resp tr{border-bottom:1px solid var(--line);padding:11px 0}
+.utab.resp td{padding:2px 0;border:0}
+.utab.resp td.num{text-align:left}
+.utab.resp .ti{white-space:normal;overflow:visible;text-overflow:clip}
+}
 """
 
 JS = """
@@ -700,7 +708,7 @@ def _render(data):
     # --- top sessions (also the table view the palette's light mode obliges)
     out.append('<div class="card"><h2>Heaviest sessions</h2>'
                '<p class="cap">Every number above in exact form.</p>'
-               '<table class="utab"><tr><th>Session</th><th>Model</th>'
+               '<table class="utab resp"><tr class="hd"><th>Session</th><th>Model</th>'
                '<th class="num">Turns</th><th class="num">Output</th>'
                '<th class="num">Cache read</th><th class="num">Tokens</th>'
                '<th class="num">List price</th></tr>')
@@ -710,15 +718,15 @@ def _render(data):
         out.append(
             f'<tr><td><span class="ti">{html.escape(s["title"])}</span>'
             f'<span class="mu">{s["id"][:8]} &middot; {when}</span></td>'
-            f'<td><span class="dot" style="background:'
+            f'<td data-label="Model"><span class="dot" style="background:'
             f'{colors.get(s["model"], "var(--muted)")}"></span>'
             f'<span class="mu">{html.escape(short.get(s["model"], s["model"]))}'
             f'</span></td>'
-            f'<td class="num">{s["msgs"]:,}</td>'
-            f'<td class="num">{_compact(s["out"])}</td>'
-            f'<td class="num">{_compact(s["cr"])}</td>'
-            f'<td class="num">{_compact(tk)}</td>'
-            f'<td class="num">{_money(s["cost"])}</td></tr>')
+            f'<td class="num" data-label="Turns">{s["msgs"]:,}</td>'
+            f'<td class="num" data-label="Output">{_compact(s["out"])}</td>'
+            f'<td class="num" data-label="Cache read">{_compact(s["cr"])}</td>'
+            f'<td class="num" data-label="Tokens">{_compact(tk)}</td>'
+            f'<td class="num" data-label="List price">{_money(s["cost"])}</td></tr>')
     out.append("</table>")
     out.append('<p class="note">This host runs on a Claude subscription, so '
                '<b>nothing here is billed per token and no figure on this page '

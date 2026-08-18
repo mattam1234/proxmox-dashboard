@@ -89,7 +89,7 @@ CSS = """
 .fl .dot.dead{background:var(--bad)}
 .fl .sub{font-size:12px;color:var(--muted)}
 .fl .bars{display:grid;gap:6px}
-.fl .bar{display:grid;grid-template-columns:46px 1fr auto;gap:8px;
+.fl .bar{display:grid;grid-template-columns:46px minmax(0,1fr) auto;gap:8px;
   align-items:center;font-size:11px;color:var(--muted)}
 .fl .track{height:6px;border-radius:999px;background:var(--bg);
   border:1px solid var(--line);overflow:hidden}

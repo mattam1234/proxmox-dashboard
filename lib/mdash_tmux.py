@@ -462,7 +462,11 @@ def serve_terminal(h, session):
 
 # ----------------------------------------------------------------- the page
 CSS = """
-.tmx{display:grid;grid-template-columns:300px 1fr;gap:14px;align-items:start}
+/* Same as .cld: a bare 1fr floors at min-content, and a terminal is wide
+   unbreakable content, so the column could outgrow the viewport. */
+.tmx{display:grid;grid-template-columns:300px minmax(0,1fr);gap:14px;align-items:start}
+.tmx>*{min-width:0}
+#termwrap{min-width:0;max-width:100%}
 @media(max-width:900px){.tmx{grid-template-columns:1fr}}
 .tmx .side{display:flex;flex-direction:column;gap:10px}
 /* #hdr is a sibling of .tmx, not a child - scoped to `.tmx .hdr` it never
